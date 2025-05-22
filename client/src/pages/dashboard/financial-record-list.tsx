@@ -1,9 +1,104 @@
-import { cloneElement } from 'react';
-import { useFinancialRecords } from '../../contexts/financial-record-context';
-import { useTable, type Column, type CellProps, type Row } from 'react-table';
+import { useMemo, useState } from 'react';
+import {
+  type FinancialRecord,
+  useFinancialRecords,
+} from '../../contexts/financial-record-context';
+import { useTable, type Column, type CellProps } from 'react-table';
+
+interface EditableCellProps extends CellProps<FinancialRecord> {
+  updateRecord: (rowIndex: number, columnId: string, value: unknown) => void;
+  editable: boolean;
+}
+
+const EditableCell: React.FC<EditableCellProps> = ({
+  value: initialValue,
+  row,
+  column,
+  updateRecord,
+  editable,
+}) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [value, setValue] = useState(initialValue);
+
+  const onBlur = () => {
+    setIsEditing(false);
+    updateRecord(row.index, column.id, value);
+  };
+
+  return (
+    <div
+      onClick={() => editable && setIsEditing(true)}
+      style={{ cursor: editable ? 'pointer' : 'default' }}
+    >
+      {isEditing ? (
+        <input
+          value={value as string}
+          onChange={(e) => setValue(e.target.value)}
+          autoFocus
+          onBlur={onBlur}
+          style={{ width: '100%' }}
+        />
+      ) : typeof value === 'string' ? (
+        value
+      ) : (
+        (value?.toString() ?? '')
+      )}
+    </div>
+  );
+};
 
 export const FinancialRecordList = () => {
   const { records } = useFinancialRecords();
+
+  const columns = useMemo<Array<Column<FinancialRecord>>>(
+    () => [
+      {
+        Header: 'Description',
+        accessor: 'description',
+        Cell: (props) => (
+          <EditableCell {...props} updateRecord={() => null} editable={true} />
+        ),
+      },
+      {
+        Header: 'Amount',
+        accessor: 'amount',
+        Cell: (props) => (
+          <EditableCell {...props} updateRecord={() => null} editable={true} />
+        ),
+      },
+      {
+        Header: 'Category',
+        accessor: 'category',
+        Cell: (props) => (
+          <EditableCell {...props} updateRecord={() => null} editable={true} />
+        ),
+      },
+      {
+        Header: 'Payment Method',
+        accessor: 'paymentMethod',
+        Cell: (props) => (
+          <EditableCell {...props} updateRecord={() => null} editable={true} />
+        ),
+      },
+      {
+        Header: 'Date',
+        accessor: 'date',
+        Cell: (props) => (
+          <EditableCell {...props} updateRecord={() => null} editable={false} />
+        ),
+      },
+      {
+        Header: 'Delete',
+        id: 'delete',
+        Cell: ({ row }) => (
+          <button onClick={() => null} className="button">
+            Delete
+          </button>
+        ),
+      },
+    ],
+    []
+  );
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({
@@ -23,9 +118,8 @@ export const FinancialRecordList = () => {
             </tr>
           ))}
         </thead>
-
         <tbody {...getTableBodyProps()}>
-          {rows.map((row, idx) => {
+          {rows.map((row) => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
