@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from 'react';
+import { useUser } from '@clerk/clerk-react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 interface FinancialRecord {
   id?: string;
@@ -27,12 +28,28 @@ export const FinancialRecordsProvider = ({
   children: React.ReactNode;
 }) => {
   const [records, setRecords] = useState<FinancialRecord[]>([]);
+  const { user } = useUser();
+  const fetchRecords = async () => {
+    const response = await fetch(
+      `http://localhost:3001/financial-records/getAllByUserID/${user?.id ?? ''}`
+    );
+
+    if (response.ok) {
+      const records = await response.json();
+      setRecords(records);
+    }
+  };
+
+  useEffect(() => {
+    fetchRecords();
+  }, []);
 
   //testimi i postit
   const addRecord = async (record: FinancialRecord) => {
     const response = await fetch('http://localhost:3001/financial-records', {
       method: 'POST',
       body: JSON.stringify(record),
+      //me kta e kena rregullu POST-in
       headers: {
         'Content-Type': 'application/json',
       },
@@ -48,7 +65,6 @@ export const FinancialRecordsProvider = ({
 
   return (
     <FinancialRecordContext.Provider value={{ records, addRecord }}>
-      {' '}
       {children}
     </FinancialRecordContext.Provider>
   );
