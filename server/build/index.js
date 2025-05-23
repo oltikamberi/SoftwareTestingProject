@@ -6,9 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const financial_records_1 = __importDefault(require("./routes/financial-records"));
+const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3001;
 app.use(express_1.default.json());
+app.use((0, cors_1.default)());
 //Lidhja me databaze
 const mongoURI = "mongodb+srv://okamberi32:1a51Z00KdB9JEec5@personalfinance-cluster.9bapgxw.mongodb.net/";
 mongoose_1.default

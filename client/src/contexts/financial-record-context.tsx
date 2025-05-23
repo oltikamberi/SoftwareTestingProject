@@ -2,7 +2,7 @@ import { useUser } from '@clerk/clerk-react';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 export interface FinancialRecord {
-  id?: string;
+  _id?: string;
   userId: string;
   date: Date;
   description: string;
@@ -83,13 +83,29 @@ export const FinancialRecordsProvider = ({
         const newRecord = await response.json();
         setRecords((prev) =>
           prev.map((record) => {
-            if (record.id === id) {
+            if (record._id === id) {
               return newRecord;
             } else {
               return record;
             }
           })
         );
+      }
+    } catch (err) {}
+  };
+
+  const deleteRecord = async (id: string) => {
+    const response = await fetch(
+      `http://localhost:3001/financial-records${id}`,
+      {
+        method: 'DELETE',
+      }
+    );
+
+    try {
+      if (response.ok) {
+        const newRecord = await response.json();
+        setRecords((prev) => [...prev, newRecord]);
       }
     } catch (err) {}
   };
