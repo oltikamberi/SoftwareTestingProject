@@ -12,7 +12,7 @@ function App() {
         <div className="navbar">
           <Link to="/"> Dashboard </Link>
           <SignedIn>
-            <UserButton />
+            <UserButton showName />
           </SignedIn>
         </div>
         <Routes>
