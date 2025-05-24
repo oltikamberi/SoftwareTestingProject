@@ -14,7 +14,7 @@ export const Dashboard = () => {
     records.forEach((record) => {
       totalAmount += record.amount;
     });
-
+    //kthen total amount
     return totalAmount;
   }, [records]);
 
