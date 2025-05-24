@@ -4,7 +4,7 @@ import { useFinancialRecords } from '../../contexts/financial-record-context';
 
 export const FinancialRecordForm = () => {
   const [description, setDescription] = useState<string>('');
-  const [amount, setAmount] = useState<string>(''); // s'eshte string, po e marrim si string edhe tani e konvertojna ne numer
+  const [amount, setAmount] = useState<string>('');
   const [category, setCategory] = useState<string>('');
   const [paymentMethod, setPaymentMethod] = useState<string>('');
   const { addRecord } = useFinancialRecords();
@@ -34,7 +34,7 @@ export const FinancialRecordForm = () => {
     <div className="form-container">
       <form onSubmit={handleSubmit}>
         <div className="form-field">
-          <label>Description: </label>
+          <label>Description:</label>
           <input
             type="text"
             required
@@ -70,7 +70,6 @@ export const FinancialRecordForm = () => {
             <option value="Other">Other</option>
           </select>
         </div>
-
         <div className="form-field">
           <label>Payment Method:</label>
           <select

@@ -18,7 +18,7 @@ interface FinancialRecordsContextType {
   deleteRecord: (id: string) => void;
 }
 
-export const FinancialRecordContext = createContext<
+export const FinancialRecordsContext = createContext<
   FinancialRecordsContextType | undefined
 >(undefined);
 
@@ -33,7 +33,7 @@ export const FinancialRecordsProvider = ({
   const fetchRecords = async () => {
     if (!user) return;
     const response = await fetch(
-      `http://localhost:3001/financial-records/getAllByUserID/${user?.id}`
+      `http://localhost:3001/financial-records/getAllByUserID/${user.id}`
     );
 
     if (response.ok) {
@@ -47,12 +47,10 @@ export const FinancialRecordsProvider = ({
     fetchRecords();
   }, [user]);
 
-  //testimi i postit
   const addRecord = async (record: FinancialRecord) => {
     const response = await fetch('http://localhost:3001/financial-records', {
       method: 'POST',
       body: JSON.stringify(record),
-      //me kta e kena rregullu POST-in
       headers: {
         'Content-Type': 'application/json',
       },
@@ -96,7 +94,7 @@ export const FinancialRecordsProvider = ({
 
   const deleteRecord = async (id: string) => {
     const response = await fetch(
-      `http://localhost:3001/financial-records${id}`,
+      `http://localhost:3001/financial-records/${id}`,
       {
         method: 'DELETE',
       }
@@ -113,17 +111,17 @@ export const FinancialRecordsProvider = ({
   };
 
   return (
-    <FinancialRecordContext.Provider
+    <FinancialRecordsContext.Provider
       value={{ records, addRecord, updateRecord, deleteRecord }}
     >
       {children}
-    </FinancialRecordContext.Provider>
+    </FinancialRecordsContext.Provider>
   );
 };
 
 export const useFinancialRecords = () => {
   const context = useContext<FinancialRecordsContextType | undefined>(
-    FinancialRecordContext
+    FinancialRecordsContext
   );
 
   if (!context) {

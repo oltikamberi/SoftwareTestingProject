@@ -3,10 +3,10 @@ import {
   type FinancialRecord,
   useFinancialRecords,
 } from '../../contexts/financial-record-context';
-import { useTable, type Column, type CellProps } from 'react-table';
+import { useTable, type Column, type CellProps, type Row } from 'react-table';
 
 interface EditableCellProps extends CellProps<FinancialRecord> {
-  updateRecord: (rowIndex: number, columnId: string, value: unknown) => void;
+  updateRecord: (rowIndex: number, columnId: string, value: any) => void;
   editable: boolean;
 }
 
@@ -32,7 +32,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
     >
       {isEditing ? (
         <input
-          value={value as string}
+          value={value}
           onChange={(e) => setValue(e.target.value)}
           autoFocus
           onBlur={onBlur}
@@ -41,21 +41,21 @@ const EditableCell: React.FC<EditableCellProps> = ({
       ) : typeof value === 'string' ? (
         value
       ) : (
-        (value?.toString() ?? '')
+        value.toString()
       )}
     </div>
   );
 };
 
 export const FinancialRecordList = () => {
-  const { records, updateRecord } = useFinancialRecords();
+  const { records, updateRecord, deleteRecord } = useFinancialRecords();
 
   const updateCellRecord = (rowIndex: number, columnId: string, value: any) => {
-    const id = records[rowIndex]._id;
+    const id = records[rowIndex]?._id;
     updateRecord(id ?? '', { ...records[rowIndex], [columnId]: value });
   };
 
-  const columns = useMemo<Array<Column<FinancialRecord>>>(
+  const columns: Array<Column<FinancialRecord>> = useMemo(
     () => [
       {
         Header: 'Description',
@@ -116,9 +116,11 @@ export const FinancialRecordList = () => {
         Header: 'Delete',
         id: 'delete',
         Cell: ({ row }) => (
-          <button onClick={() => null} className="button">
-            {''}
-            Delete{''}
+          <button
+            onClick={() => deleteRecord(row.original._id ?? '')}
+            className="button"
+          >
+            Delete
           </button>
         ),
       },
@@ -131,7 +133,6 @@ export const FinancialRecordList = () => {
       columns,
       data: records,
     });
-
   return (
     <div className="table-container">
       <table {...getTableProps()} className="table">
@@ -145,7 +146,7 @@ export const FinancialRecordList = () => {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
+          {rows.map((row, idx) => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
