@@ -8,7 +8,12 @@ function App() {
   return (
     <Router>
       <div className="app-container">
-        <div className="navbar"></div>
+        <div className="navbar">
+          <Link to="/"> Dashboard </Link>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+        </div>
         <Routes>
           <Route
             path="/"
