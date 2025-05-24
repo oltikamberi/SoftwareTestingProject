@@ -8,6 +8,7 @@ export const Dashboard = () => {
   const { user } = useUser();
   const { records } = useFinancialRecords();
 
+  //Pjesa e kalkulimit te vleres per muaj
   const totalMonthly = useMemo(() => {
     let totalAmount = 0;
     records.forEach((record) => {
