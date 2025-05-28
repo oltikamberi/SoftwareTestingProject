@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   type FinancialRecord,
   useFinancialRecords,
@@ -20,7 +20,25 @@ const EditableCell: React.FC<EditableCellProps> = ({
   const [isEditing, setIsEditing] = useState(false);
   const [value, setValue] = useState(initialValue);
 
-  const onBlur = () => {
+  /* Ktu e kemi rregullu bugin per me i ba sync mausin edhe enterin mi shfaq vlerat meniher pa e trus enter 
+  e kena shtu use effectin i cili mundson me ba i ba sync qe ndryshimet me u ba meniher, e man te njejt vleren lokale 
+  kur kemi ndryshime te prindit */
+
+  //Sync local value when parent updates
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
+
+  //Me kta e kemi mundsu me rujt vleren me enter
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      setIsEditing(false);
+      updateRecord(row.index, column.id, value);
+    }
+  };
+
+  //Me kta e kemi mundesu me rujt vlerat kur ta shtypim mausin kudo"
+  const handleBlur = () => {
     setIsEditing(false);
     updateRecord(row.index, column.id, value);
   };
@@ -34,14 +52,12 @@ const EditableCell: React.FC<EditableCellProps> = ({
         <input
           value={value}
           onChange={(e) => setValue(e.target.value)}
+          onBlur={handleBlur}
+          onKeyDown={handleKeyDown}
           autoFocus
-          onBlur={onBlur}
-          style={{ width: '100%' }}
         />
-      ) : typeof value === 'string' ? (
-        value
       ) : (
-        value.toString()
+        value
       )}
     </div>
   );
@@ -133,6 +149,7 @@ export const FinancialRecordList = () => {
       columns,
       data: records,
     });
+
   return (
     <div className="table-container">
       <table {...getTableProps()} className="table">

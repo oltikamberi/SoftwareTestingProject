@@ -12,9 +12,8 @@ export const Dashboard = () => {
   const totalMonthly = useMemo(() => {
     let totalAmount = 0;
     records.forEach((record) => {
-      totalAmount += record.amount;
+      totalAmount += Number(record.amount);
     });
-    //kthen total amount
     return totalAmount;
   }, [records]);
 
@@ -22,7 +21,7 @@ export const Dashboard = () => {
     <div className="dashboard-container">
       <h1> Welcome {user?.firstName}! Here Are Your Finances:</h1>
       <FinancialRecordForm />
-      <div>Total Monthly: ${totalMonthly}</div>
+      <div>Total Monthly: ${totalMonthly.toFixed(2)}</div>
       <FinancialRecordList />
     </div>
   );

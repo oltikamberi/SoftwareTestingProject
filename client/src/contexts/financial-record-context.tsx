@@ -14,7 +14,7 @@ export interface FinancialRecord {
 interface FinancialRecordsContextType {
   records: FinancialRecord[];
   addRecord: (record: FinancialRecord) => void;
-  updateRecord: (id: string, newRecord: FinancialRecord) => void;
+  updateRecord: (id: string, updatedFields: Partial<FinancialRecord>) => void;
   deleteRecord: (id: string) => void;
 }
 
@@ -38,7 +38,6 @@ export const FinancialRecordsProvider = ({
 
     if (response.ok) {
       const records = await response.json();
-      console.log(records);
       setRecords(records);
     }
   };
@@ -61,35 +60,37 @@ export const FinancialRecordsProvider = ({
         const newRecord = await response.json();
         setRecords((prev) => [...prev, newRecord]);
       }
-    } catch (err) {}
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const updateRecord = async (id: string, newRecord: FinancialRecord) => {
-    const response = await fetch(
-      `http://localhost:3001/financial-records/${id}`,
-      {
-        method: 'PUT',
-        body: JSON.stringify(newRecord),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
+  const updateRecord = async (
+    id: string,
+    updatedFields: Partial<FinancialRecord>
+  ) => {
     try {
+      const response = await fetch(
+        `http://localhost:3001/financial-records/${id}`,
+        {
+          method: 'PUT',
+          body: JSON.stringify(updatedFields),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
       if (response.ok) {
-        const newRecord = await response.json();
         setRecords((prev) =>
-          prev.map((record) => {
-            if (record._id === id) {
-              return newRecord;
-            } else {
-              return record;
-            }
-          })
+          prev.map((record) =>
+            record._id === id ? { ...record, ...updatedFields } : record
+          )
         );
       }
-    } catch (err) {}
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const deleteRecord = async (id: string) => {
@@ -107,7 +108,9 @@ export const FinancialRecordsProvider = ({
           prev.filter((record) => record._id !== deletedRecord._id)
         );
       }
-    } catch (err) {}
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -120,9 +123,7 @@ export const FinancialRecordsProvider = ({
 };
 
 export const useFinancialRecords = () => {
-  const context = useContext<FinancialRecordsContextType | undefined>(
-    FinancialRecordsContext
-  );
+  const context = useContext(FinancialRecordsContext);
 
   if (!context) {
     throw new Error(
