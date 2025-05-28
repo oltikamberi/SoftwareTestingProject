@@ -15,7 +15,6 @@ export const BudgetList = () => {
           <tr>
             <th>Category</th>
             <th>Monthly Limit</th>
-            <th>Date</th>
             <th>Delete</th>
           </tr>
         </thead>
@@ -43,7 +42,7 @@ export const BudgetList = () => {
                   }
                 />
               </td>
-              <td>{new Date(record.date).toLocaleDateString()}</td>
+
               <td>
                 <button
                   className="button-delete"

@@ -2,7 +2,6 @@ import { useUser } from '@clerk/clerk-react';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 export interface BudgetRecord {
-  date: string | number | Date;
   _id?: string;
   userId: string;
   category: string;
