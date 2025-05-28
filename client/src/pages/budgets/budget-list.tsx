@@ -1,13 +1,10 @@
+import type { BudgetRecord } from '../../contexts/budget-context';
 import { useBudgetRecords } from '../../contexts/budget-context';
 
 export const BudgetList = () => {
-  const { budgetRecords, updateBudget, deleteBudget } = useBudgetRecords();
+  const { budgets, updateBudget, deleteBudget } = useBudgetRecords();
 
-  const handleUpdate = (
-    id: string,
-    field: keyof (typeof budgetRecords)[0],
-    value: any
-  ) => {
+  const handleUpdate = (id: string, field: keyof BudgetRecord, value: any) => {
     updateBudget(id, { [field]: value });
   };
 
@@ -23,7 +20,7 @@ export const BudgetList = () => {
           </tr>
         </thead>
         <tbody>
-          {budgetRecords.map((record) => (
+          {budgets.map((record) => (
             <tr key={record._id}>
               <td>
                 <input

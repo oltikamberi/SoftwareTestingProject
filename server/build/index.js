@@ -28,7 +28,6 @@ mongoose_1.default
 app.use("/financial-records", financial_records_1.default);
 app.use("/income", incomeRecords);
 app.use("/budgets", budgetRecords);
-
 app.listen(port, () => {
   console.log(`Server running on portin ${port}`);
 });

@@ -1,8 +1,8 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Dashboard } from './pages/dashboard';
-import { IncomePage } from './pages/income';
-import { BudgetPage } from './pages/budgets';
+import IncomePage from './pages/income';
+import BudgetPage from './pages/budgets';
 import { Auth } from './pages/auth';
 import { FinancialRecordsProvider } from './contexts/financial-record-context';
 import { IncomeProvider } from './contexts/income-context';
