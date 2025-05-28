@@ -26,6 +26,9 @@ mongoose_1.default
   .then(() => console.log("CONNECTED TO MONGODB"))
   .catch((err) => console.error("Failed to Connect to MongoDB", err));
 app.use("/financial-records", financial_records_1.default);
+app.use("/income", incomeRecords);
+app.use("/budgets", budgetRecords);
+
 app.listen(port, () => {
   console.log(`Server running on portin ${port}`);
 });
