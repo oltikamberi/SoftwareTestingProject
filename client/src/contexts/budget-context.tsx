@@ -3,7 +3,6 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 export interface BudgetRecord {
   date: string | number | Date;
-  amount: string | number | readonly string[] | undefined;
   _id?: string;
   userId: string;
   category: string;

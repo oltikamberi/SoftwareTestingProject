@@ -14,7 +14,7 @@ export const BudgetList = () => {
         <thead>
           <tr>
             <th>Category</th>
-            <th>Amount</th>
+            <th>Monthly Limit</th>
             <th>Date</th>
             <th>Delete</th>
           </tr>
@@ -33,11 +33,11 @@ export const BudgetList = () => {
               <td>
                 <input
                   type="number"
-                  value={record.amount}
+                  value={record.monthlyLimit}
                   onChange={(e) =>
                     handleUpdate(
                       record._id ?? '',
-                      'amount',
+                      'monthlyLimit',
                       parseFloat(e.target.value)
                     )
                   }

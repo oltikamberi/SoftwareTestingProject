@@ -5,7 +5,6 @@ import { useBudgetRecords } from '../../contexts/budget-context';
 export const BudgetForm = () => {
   const [category, setCategory] = useState('');
   const [monthlyLimit, setMonthlyLimit] = useState('');
-  const [amount, setAmount] = useState('');
   const [date, setDate] = useState('');
   const { addBudget } = useBudgetRecords();
   const { user } = useUser();
@@ -17,7 +16,6 @@ export const BudgetForm = () => {
       userId: user?.id ?? '',
       category,
       monthlyLimit: parseFloat(monthlyLimit),
-      amount: parseFloat(amount),
       date: new Date(date),
     };
 
@@ -26,7 +24,6 @@ export const BudgetForm = () => {
     // Reset fields
     setCategory('');
     setMonthlyLimit('');
-    setAmount('');
     setDate('');
   };
 
@@ -47,15 +44,6 @@ export const BudgetForm = () => {
           type="number"
           value={monthlyLimit}
           onChange={(e) => setMonthlyLimit(e.target.value)}
-          required
-        />
-
-        <label>Amount</label>
-        <input
-          className="input"
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
           required
         />
 
