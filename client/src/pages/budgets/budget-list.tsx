@@ -42,7 +42,6 @@ export const BudgetList = () => {
                   }
                 />
               </td>
-
               <td>
                 <button
                   className="button-delete"

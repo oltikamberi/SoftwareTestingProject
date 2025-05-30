@@ -3,6 +3,7 @@ import IncomeRecordModel from "../schema/income-record";
 
 const router = express.Router();
 
+// GET all records by user ID
 router.get("/getAllByUserID/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -23,6 +24,7 @@ router.post("/", async (req, res) => {
   }
 });
 
+// PUT update income record
 router.put("/:id", async (req, res) => {
   try {
     const updated = await IncomeRecordModel.findByIdAndUpdate(
@@ -35,6 +37,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// DELETE income record
 router.delete("/:id", async (req, res) => {
   try {
     const deleted = await IncomeRecordModel.findByIdAndDelete(req.params.id);

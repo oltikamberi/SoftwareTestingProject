@@ -6,13 +6,26 @@ import './financial-record.css';
 import { useFinancialRecords } from '../../contexts/financial-record-context';
 import { useIncomeRecords } from '../../contexts/income-context';
 import { useBudgetRecords } from '../../contexts/budget-context';
+import { useState } from 'react';
 
 import { useMemo } from 'react';
 
 export const Dashboard = () => {
   const { user } = useUser();
-  const { records } = useFinancialRecords();
-  const { incomeRecords } = useIncomeRecords();
+  const [selectedMonth, setSelectedMonth] = useState(
+    new Date().toISOString().slice(0, 7)
+  );
+
+  const { records: allRecords } = useFinancialRecords();
+  const { incomeRecords: allIncomeRecords } = useIncomeRecords();
+
+  // Filter records for selected month
+  const records = allRecords.filter((record) =>
+    new Date(record.date).toISOString().startsWith(selectedMonth)
+  );
+  const incomeRecords = allIncomeRecords.filter((income) =>
+    new Date(income.date).toISOString().startsWith(selectedMonth)
+  );
   const { budgets } = useBudgetRecords();
 
   // 🟢 Total Income
@@ -47,6 +60,17 @@ export const Dashboard = () => {
     <div className="dashboard-container">
       <h1>Welcome {user?.firstName}! Here Are Your Finances:</h1>
 
+      {/* Caktimi i shpenzimeve per muaj */}
+      {/* 📅 Month Picker */}
+      <label style={{ marginBottom: '10px', display: 'block' }}>
+        📅 Select Month:{' '}
+        <input
+          type="month"
+          value={selectedMonth}
+          onChange={(e) => setSelectedMonth(e.target.value)}
+        />
+      </label>
+
       {/* 📥 Record Form */}
       <FinancialRecordForm />
 
@@ -57,15 +81,27 @@ export const Dashboard = () => {
         {budgets.map((budget) => {
           const used = budgetUsage[budget.category] || 0;
           const remaining = budget.monthlyLimit - used;
+          const isOverspent = remaining < 0;
+          //Nese e kalon vleren kthen me te kuqe qe e ke kalu, nese jo vetem tregon sa tkan met
           return (
             <div key={budget._id}>
-              Budget for {budget.category}: ${remaining} remaining of $
-              {budget.monthlyLimit}
+              {isOverspent ? (
+                <span style={{ color: 'red' }}>
+                  Budget for {budget.category}: Overspent ${Math.abs(remaining)}{' '}
+                  of ${budget.monthlyLimit}
+                </span>
+              ) : (
+                <span>
+                  Budget for {budget.category}: ${remaining} remaining of $
+                  {budget.monthlyLimit}
+                </span>
+              )}
             </div>
           );
         })}
+
         <h3>Income State: ${incomeState}</h3>
-        <h3>Total Expenses: -${-totalExpenses}</h3>
+        <h3>Total Expenses: ${-totalExpenses}</h3>
       </div>
 
       {/* 📄 Records Table */}

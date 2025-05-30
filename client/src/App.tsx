@@ -20,6 +20,7 @@ function App() {
                 <Link to="/">Dashboard</Link>
                 <Link to="/income">Income</Link>
                 <Link to="/budgets">Budgets</Link>
+
                 <SignedIn>
                   <UserButton showName />
                 </SignedIn>
