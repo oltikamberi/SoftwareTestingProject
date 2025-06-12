@@ -11,15 +11,38 @@ export const BudgetForm = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const parsedLimit = parseFloat(monthlyLimit);
+    const normalizedCategory = category.trim().toLowerCase();
+
+    if (isNaN(parsedLimit) || parsedLimit < 0) {
+      alert('Only zero or positive values are allowed for budget.');
+      return;
+    }
+
+    // General max limit
+    if (parsedLimit > 1_000_000_000_000) {
+      alert('Max value is 1 trillion.');
+      return;
+    }
+
+    // Custom limits
+    if (normalizedCategory === 'clothes' && parsedLimit > 7000) {
+      alert('Max value for Clothes is 7000.');
+      return;
+    }
+
+    if (normalizedCategory === 'food' && parsedLimit > 12000) {
+      alert('Max value for Food is 12000.');
+      return;
+    }
+
     const newBudget = {
       userId: user?.id ?? '',
       category,
-      monthlyLimit: parseFloat(monthlyLimit),
+      monthlyLimit: parsedLimit,
     };
 
     addBudget(newBudget);
-
-    // Reset fields
     setCategory('');
     setMonthlyLimit('');
   };

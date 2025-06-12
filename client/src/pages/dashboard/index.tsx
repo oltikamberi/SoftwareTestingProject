@@ -66,6 +66,7 @@ export const Dashboard = () => {
         📅 Select Month:{' '}
         <input
           type="month"
+          min="2000-01"
           value={selectedMonth}
           onChange={(e) => setSelectedMonth(e.target.value)}
         />

@@ -11,11 +11,18 @@ export const IncomeForm = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const parsedAmount = parseFloat(amount);
+
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+      alert('Only positive values are allowed for income.');
+      return;
+    }
+
     const newIncome = {
       userId: user?.id ?? '',
       date: new Date(),
       source,
-      amount: parseFloat(amount),
+      amount: parsedAmount,
     };
 
     addIncome(newIncome);
