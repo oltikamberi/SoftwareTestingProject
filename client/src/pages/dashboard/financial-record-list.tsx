@@ -5,6 +5,8 @@ import {
 } from '../../contexts/financial-record-context';
 import { useTable, type Column, type CellProps, type Row } from 'react-table';
 
+import SaveTableButton from './save-table-button';
+
 interface EditableCellProps extends CellProps<FinancialRecord> {
   updateRecord: (rowIndex: number, columnId: string, value: any) => void;
   editable: boolean;
@@ -151,30 +153,38 @@ export const FinancialRecordList = () => {
     });
 
   return (
-    <div className="table-container">
-      <table {...getTableProps()} className="table">
-        <thead>
-          {headerGroups.map((hg) => (
-            <tr {...hg.getHeaderGroupProps()}>
-              {hg.headers.map((column) => (
-                <th {...column.getHeaderProps()}> {column.render('Header')}</th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row, idx) => {
-            prepareRow(row);
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()}> {cell.render('Cell')} </td>
+    <div className="table-row">
+      <div className="table-wrapper">
+        <table {...getTableProps()} className="table">
+          <thead>
+            {headerGroups.map((hg) => (
+              <tr {...hg.getHeaderGroupProps()}>
+                {hg.headers.map((column) => (
+                  <th {...column.getHeaderProps()}>
+                    {column.render('Header')}
+                  </th>
                 ))}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            ))}
+          </thead>
+
+          <tbody {...getTableBodyProps()}>
+            {rows.map((row) => {
+              prepareRow(row);
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell) => (
+                    <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Button OUTSIDE the table, to the RIGHT of it */}
+      <SaveTableButton records={records} />
     </div>
   );
 };

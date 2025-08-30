@@ -26,7 +26,7 @@ export const BudgetForm = () => {
     }
 
     // Custom limits
-    if (normalizedCategory === 'clothes' && parsedLimit > 7000) {
+    if (normalizedCategory === 'clothes' && parsedLimit > 10000) {
       alert('Max value for Clothes is 7000.');
       return;
     }

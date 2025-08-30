@@ -5,6 +5,8 @@
   "dependencies": {
     "chromedriver": "^137.0.0",
     "dotenv": "^16.5.0",
+    "jspdf": "^3.0.1",
+    "jspdf-autotable": "^5.0.2",
     "selenium-webdriver": "^4.33.0"
   }
 }

@@ -31,6 +31,7 @@ h2 {
 .button:hover {
   background-color: #2980b9;
 }
+
 .button-delete {
   background-color: #343cdb;
   color: #ffffff;
@@ -68,6 +69,7 @@ label {
 .table-container {
   margin: 20px;
   overflow-x: auto; /* Enables horizontal scrolling if the table is too wide */
+  position: relative; /* positioning context for Save Table button */
 }
 
 .table {
@@ -96,4 +98,49 @@ label {
 
 .table tbody tr:hover {
   background-color: #e8f4f8; /* Light blue hover effect for rows */
+}
+
+/* Table + button side-by-side */
+.table-row {
+  display: flex;
+  align-items: flex-start; /* align button with header row */
+  gap: 20px; /* space between table and button */
+  margin: 20px;
+}
+
+/* Keep table behavior the same */
+.table-wrapper {
+  flex: 1 1 auto;
+  overflow-x: auto;
+}
+
+/* Save Table button (no hacks, responsive) */
+.saveTableBtn {
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 16px;
+  white-space: nowrap; /* keep it on one line */
+  height: 50px; /* visually matches your header height */
+  align-self: flex-start; /* stick to the top edge */
+  margin-top: 20px;
+}
+
+.saveTableBtn:hover {
+  filter: brightness(0.95);
+}
+
+/* Optional: on small screens, stack button under table */
+@media (max-width: 900px) {
+  .table-row {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .saveTableBtn {
+    margin-top: 8px;
+  }
 }
