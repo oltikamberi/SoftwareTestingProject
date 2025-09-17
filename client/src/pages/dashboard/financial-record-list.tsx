@@ -7,6 +7,10 @@ import { useTable, type Column, type CellProps, type Row } from 'react-table';
 
 import SaveTableButton from './save-table-button';
 
+type ListProps = {
+  filenameHint?: string;
+};
+
 interface EditableCellProps extends CellProps<FinancialRecord> {
   updateRecord: (rowIndex: number, columnId: string, value: any) => void;
   editable: boolean;
@@ -65,7 +69,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
   );
 };
 
-export const FinancialRecordList = () => {
+export const FinancialRecordList: React.FC<ListProps> = ({ filenameHint }) => {
   const { records, updateRecord, deleteRecord } = useFinancialRecords();
 
   const updateCellRecord = (rowIndex: number, columnId: string, value: any) => {
@@ -184,7 +188,7 @@ export const FinancialRecordList = () => {
       </div>
 
       {/* Button OUTSIDE the table, to the RIGHT of it */}
-      <SaveTableButton records={records} />
+      <SaveTableButton records={records} filenameHint={filenameHint} />
     </div>
   );
 };

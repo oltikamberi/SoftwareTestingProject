@@ -1,0 +1,188 @@
+.dashboard {
+  width: 100%;
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 24px;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard__topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.dashboard__title {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 28px;
+}
+
+.month-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.month-picker label {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.month-picker input[type="month"] {
+  padding: 8px 10px;
+  border: 1px solid #dfe6e9;
+  border-radius: 8px;
+}
+
+.stats-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.stat-card {
+  background: #ffffff;
+  border: 1px solid #ecf0f1;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.stat-card__label {
+  color: #7f8c8d;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.stat-card__value {
+  margin-top: 8px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.stat-card--income .stat-card__value { color: #16a34a; }
+.stat-card--expense .stat-card__value { color: #dc2626; }
+.stat-card--positive .stat-card__value { color: #0ea5e9; }
+.stat-card--negative .stat-card__value { color: #f97316; }
+
+.content-grid {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.panel {
+  background: #ffffff;
+  border: 1px solid #ecf0f1;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+
+.panel--grow {
+  margin-top: 24px;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* allow children to shrink for proper overflow */
+}
+
+.panel--grow .panel__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panel__header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.panel__header h2 {
+  margin: 0;
+  font-size: 16px;
+  color: #2c3e50;
+}
+
+.panel__body {
+  padding: 16px;
+}
+
+.budgets-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.budget-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 12px;
+  background: #fafafa;
+}
+
+.budget-card--danger { border-color: #fecaca; background: #fff1f2; }
+
+.budget-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.budget-card__title {
+  font-weight: 700;
+  color: #374151;
+}
+
+.budget-card__amounts {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  color: #111827;
+  font-weight: 600;
+}
+
+.budget-card__used { color: #0ea5e9; }
+.budget-card__limit { color: #6b7280; font-weight: 500; }
+.budget-card__sep { color: #9ca3af; }
+
+.progress {
+  margin-top: 10px;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress__bar {
+  height: 100%;
+  background: linear-gradient(90deg, #60a5fa, #0ea5e9);
+}
+
+.budget-card__footer {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #374151;
+}
+
+.budget-card__footer.danger { color: #dc2626; }
+
+@media (max-width: 920px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .content-grid { grid-template-columns: 1fr; }
+  .dashboard__topbar { flex-direction: column; align-items: flex-start; }
+}
+
+

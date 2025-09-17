@@ -103,15 +103,18 @@ label {
 /* Table + button side-by-side */
 .table-row {
   display: flex;
-  align-items: flex-start; /* align button with header row */
+  align-items: stretch; /* allow table to stretch vertically */
   gap: 20px; /* space between table and button */
-  margin: 20px;
+  margin: 0; /* handled by panel padding */
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 /* Keep table behavior the same */
 .table-wrapper {
   flex: 1 1 auto;
-  overflow-x: auto;
+  min-height: 0;
+  overflow: auto; /* both x and y if needed */
 }
 
 /* Save Table button (no hacks, responsive) */
@@ -127,7 +130,7 @@ label {
   white-space: nowrap; /* keep it on one line */
   height: 50px; /* visually matches your header height */
   align-self: flex-start; /* stick to the top edge */
-  margin-top: 20px;
+  margin-left: 8px;
 }
 
 .saveTableBtn:hover {

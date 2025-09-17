@@ -2,6 +2,7 @@ import { useUser } from '@clerk/clerk-react';
 import { FinancialRecordForm } from './financial-record-form';
 import { FinancialRecordList } from './financial-record-list';
 import './financial-record.css';
+import './dashboard.css';
 
 import { useFinancialRecords } from '../../contexts/financial-record-context';
 import { useIncomeRecords } from '../../contexts/income-context';
@@ -57,56 +58,95 @@ export const Dashboard = () => {
   }, [totalIncome, totalExpenses]);
 
   return (
-    <div className="dashboard-container">
-      <h1>Welcome {user?.firstName}! Here Are Your Finances:</h1>
-
-      {/* Caktimi i shpenzimeve per muaj */}
-      {/* 📅 Month Picker */}
-      <label style={{ marginBottom: '10px', display: 'block' }}>
-        📅 Select Month:{' '}
-        <input
-          type="month"
-          min="2000-01"
-          value={selectedMonth}
-          onChange={(e) => setSelectedMonth(e.target.value)}
-        />
-      </label>
-
-      {/* 📥 Record Form */}
-      <FinancialRecordForm />
-
-      {/* ✅ Dashboard Summary (moved below the form) */}
-      <div style={{ marginTop: '20px', marginBottom: '20px' }}>
-        <h3>Total Income: ${totalIncome}</h3>
-        <h3>Budgets:</h3>
-        {budgets.map((budget) => {
-          const used = budgetUsage[budget.category] || 0;
-          const remaining = budget.monthlyLimit - used;
-          const isOverspent = remaining < 0;
-          //Nese e kalon vleren kthen me te kuqe qe e ke kalu, nese jo vetem tregon sa tkan met
-          return (
-            <div key={budget._id}>
-              {isOverspent ? (
-                <span style={{ color: 'red' }}>
-                  Budget for {budget.category}: Overspent ${Math.abs(remaining)}{' '}
-                  of ${budget.monthlyLimit}
-                </span>
-              ) : (
-                <span>
-                  Budget for {budget.category}: ${remaining} remaining of $
-                  {budget.monthlyLimit}
-                </span>
-              )}
-            </div>
-          );
-        })}
-
-        <h3>Income State: ${incomeState}</h3>
-        <h3>Total Expenses: ${-totalExpenses}</h3>
+    <div className="dashboard">
+      <div className="dashboard__topbar">
+        <h1 className="dashboard__title">Welcome {user?.firstName}</h1>
+        <div className="month-picker">
+          <label htmlFor="month">Select Month</label>
+          <input
+            id="month"
+            type="month"
+            min="2000-01"
+            value={selectedMonth}
+            onChange={(e) => setSelectedMonth(e.target.value)}
+          />
+        </div>
       </div>
 
-      {/* 📄 Records Table */}
-      <FinancialRecordList />
+      <section className="stats-grid">
+        <div className="stat-card stat-card--income">
+          <div className="stat-card__label">Total Income</div>
+          <div className="stat-card__value">${totalIncome}</div>
+        </div>
+        <div className="stat-card stat-card--expense">
+          <div className="stat-card__label">Total Expenses</div>
+          <div className="stat-card__value">${-totalExpenses}</div>
+        </div>
+        <div className={`stat-card ${incomeState >= 0 ? 'stat-card--positive' : 'stat-card--negative'}`}>
+          <div className="stat-card__label">Balance</div>
+          <div className="stat-card__value">${incomeState}</div>
+        </div>
+      </section>
+
+      <section className="content-grid">
+        <div className="panel">
+          <div className="panel__header">
+            <h2>Add Financial Record</h2>
+          </div>
+          <div className="panel__body">
+            <FinancialRecordForm />
+          </div>
+        </div>
+
+        <div className="panel">
+          <div className="panel__header">
+            <h2>Budgets Overview</h2>
+          </div>
+          <div className="panel__body budgets-list">
+            {budgets.length === 0 && (
+              <div className="empty">No budgets yet.</div>
+            )}
+            {budgets.map((budget) => {
+              const used = budgetUsage[budget.category] || 0;
+              const limit = budget.monthlyLimit;
+              const remaining = limit - used;
+              const isOverspent = remaining < 0;
+              const percent = Math.min(100, Math.round((used / Math.max(1, limit)) * 100));
+              return (
+                <div className={`budget-card ${isOverspent ? 'budget-card--danger' : ''}`} key={budget._id}>
+                  <div className="budget-card__top">
+                    <div className="budget-card__title">{budget.category}</div>
+                    <div className="budget-card__amounts">
+                      <span className="budget-card__used">${used}</span>
+                      <span className="budget-card__sep">/</span>
+                      <span className="budget-card__limit">${limit}</span>
+                    </div>
+                  </div>
+                  <div className="progress">
+                    <div className="progress__bar" style={{ width: `${percent}%` }} />
+                  </div>
+                  <div className={`budget-card__footer ${isOverspent ? 'danger' : ''}`}>
+                    {isOverspent ? (
+                      <span>Overspent ${Math.abs(remaining)}</span>
+                    ) : (
+                      <span>{remaining} remaining</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="panel panel--grow">
+        <div className="panel__header">
+          <h2>Transactions</h2>
+        </div>
+        <div className="panel__body">
+          <FinancialRecordList filenameHint={selectedMonth} />
+        </div>
+      </section>
     </div>
   );
 };
